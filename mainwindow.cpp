@@ -407,3 +407,26 @@ void MainWindow::on_staticbutt_clicked()
     m_currentIndex = m_rectangles.size();
     update();
 }
+void MainWindow::on_submit_clicked()
+{
+    int extra_row = ui->addedp->text().toInt();
+
+    int current = ui->inputTable->rowCount();
+
+    for (int row = 0; row < extra_row; ++row) {
+        int newRow = current + row;  // Calculate the new row index
+        ui->inputTable->insertRow(newRow);
+
+        QTableWidgetItem *item = new QTableWidgetItem(QString::number(newRow + 1));
+        ui->inputTable->setItem(newRow, 0, item);
+        item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+
+        for (int col = 1; col < 4; ++col) {
+            QTableWidgetItem *item = new QTableWidgetItem(QString("X"));
+            ui->inputTable->setItem(newRow, col, item);
+        }
+    }
+    int index=ui->Schedular_type->currentIndex();
+    enableOrDisablePriority( index);
+}
+
