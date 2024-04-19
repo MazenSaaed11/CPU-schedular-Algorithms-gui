@@ -36,6 +36,8 @@ data_to_output SJF_Preemptive(vector<Process>& processes);
 
 data_to_output fcfs(vector<Process>& processes);
 
+data_to_output preemptive_priority(vector<Process>& processes);
+
 data_to_output non_preemptive_priority(vector<Process>processes);
 
 data_to_output RR(vector<Process>& processes, int quantum);
