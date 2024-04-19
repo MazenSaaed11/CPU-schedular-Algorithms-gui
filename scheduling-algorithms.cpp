@@ -101,3 +101,36 @@ data_to_output SJF_Preemptive(vector<Process>& processes){
     ret.avgTurnAroundTime = ret.avgTurnAroundTime / (double)numOfProcesses;
     return ret;
 }
+data_to_output fcfs(vector<Process>& processes) {
+    sort(processes.begin(), processes.end(), sortByArrivalTime);
+    int currentTime = 0;
+    for (auto &process: processes) {
+        currentTime = max(currentTime, process.arrivalTime);
+        process.completionTime = currentTime + process.burstTime;
+        process.waitingTime = currentTime - process.arrivalTime;
+        process.turnAroundTime = process.completionTime - process.arrivalTime;
+        currentTime = process.completionTime;
+    }
+    double totalWaitingTime = 0;
+    double totalTurnaroundTime = 0;
+
+    for (const auto &process: processes) {
+        totalWaitingTime += process.waitingTime;
+        totalTurnaroundTime += process.turnAroundTime;
+    }
+    data_to_output data;
+    int check = 0;
+    for (auto &process: processes) {
+        if (process.arrivalTime > check) {
+            for (int k = 0; k < process.arrivalTime - check; ++k)
+                data.ganttChart.emplace_back("x");
+        }
+        for (int j = 0; j < process.burstTime; ++j) {
+            data.ganttChart.emplace_back(process.processName);
+        }
+        check = process.completionTime;
+    }
+    data.avgWaitingTime = totalWaitingTime / processes.size();
+    data.avgTurnAroundTime = totalTurnaroundTime / processes.size();
+    return data;
+}
