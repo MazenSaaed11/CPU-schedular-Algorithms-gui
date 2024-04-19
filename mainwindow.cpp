@@ -269,3 +269,141 @@ void MainWindow::hideResumeButton()
     ui->stop_or_resume->setText("Stop");
 }
 
+
+
+void MainWindow::enableOrDisablePriority(int index)
+{
+    if(index==0 || index == 1 || index == 2 || index == 5)
+    {   for (int row = 0; row < ui->inputTable->rowCount(); ++row)
+            ui->inputTable->item(row, 3)->setFlags(ui->inputTable->item(row, 3)->flags() & ~Qt::ItemIsEditable);
+    }
+    else
+    {
+        for (int row = 0; row < ui->inputTable->rowCount(); ++row)
+            ui->inputTable->item(row, 3)->setFlags(ui->inputTable->item(row, 3)->flags() | Qt::ItemIsEditable);
+    }
+}
+
+void MainWindow::AddRectangles(vector<string>&v)
+{
+    int color_idx = 0;
+    RectangleProperties rectangle;
+    int x = 910;
+    int y = 30;
+    for(int i = 0;i<v.size();i++)
+    {
+        if(i%60==0)
+        {
+            y += 100;
+            x = 910;
+        }
+        QColor color;
+        QString key = QString::fromStdString(v[i]);
+        if (colorMap.count(key) > 0) {
+            color = colorMap[key];
+        } else {
+            colorMap[key] = lightColors[color_idx];
+            color = colorMap[key];
+            color_idx++;
+            color_idx%=25;
+        }
+        rectangle = {color, key,y,100};
+        m_rectangles.push_back(rectangle);
+        x+=10;
+    }
+}
+
+
+void MainWindow::on_dynamicbutt_clicked()
+{
+    done.clear();
+    ui->waiting_time->setVisible(false);
+    ui->turn_time->setVisible(false);
+    ui->time->setText("0 seconds");
+    ui->stop_or_resume->setVisible(true);
+    ui->readyQeue->setVisible(true);
+
+    readyindex = 0;
+    m_currentIndex=0;
+    pre_row=-1;
+    m_rectangles.clear();
+    colorMap.clear();
+    processes.clear();
+    readTableData();
+    int index = ui->Schedular_type->currentIndex();
+    if(index==0)
+        d = fcfs(processes);
+    else if (index == 1)
+        d = SJF_Preemptive(processes);
+    else if (index == 2)
+        d = SJF_NonPreemptive(processes);
+    else if(index == 3)
+        d = preemptive_priority(processes);
+    else if(index == 4)
+        d = non_preemptive_priority(processes);
+    else
+        d = RR(processes,ui->quantam->text().toInt());
+    data=d;
+    done.resize(d.ganttChart.size());
+    AddRectangles(d.ganttChart);
+    ui->readyQeue->clearContents();
+    ui->readyQeue->setRowCount(0);
+    createreadyqeue();
+    m_timer->start(1000);
+}
+
+
+
+void MainWindow::on_stop_or_resume_clicked()
+{
+    if(ui->stop_or_resume->text() == "Stop")
+    {
+        m_timer->stop();
+        ui->stop_or_resume->setText("Resume");
+    }
+    else
+    {
+        m_timer->start(1000);
+        ui->stop_or_resume->setText("Stop");
+    }
+}
+
+
+void MainWindow::on_staticbutt_clicked()
+{
+    ui->readyQeue->setVisible(false);
+    m_rectangles.clear();
+    colorMap.clear();
+    processes.clear();
+    readTableData();
+    int index = ui->Schedular_type->currentIndex();
+
+    if(index==0)
+       d = fcfs(processes);
+    else if (index == 1)
+        d = SJF_Preemptive (processes);
+    else if (index == 2)
+        d = SJF_NonPreemptive(processes);
+    else if(index == 3)
+        d = preemptive_priority(processes);
+    else if(index == 4)
+        d = non_preemptive_priority(processes);
+    else
+        d = RR(processes,ui->quantam->text().toInt());
+    data=d;
+
+    done.clear();
+    done.resize(d.ganttChart.size());
+    AddRectangles(d.ganttChart);
+
+    double wait = data.avgWaitingTime;
+    double turn = data.avgTurnAroundTime;
+    if(wait<=1e-2){wait=0;}
+     if(turn<=1e-2){turn=0;}
+    ui->waiting_time->setVisible(true);
+    ui->turn_time->setVisible(true);
+    ui->waiting_time->setText(QString("Average Turnaround: ") + QString::number(turn,'f',2));
+    ui->turn_time->setText(QString("Average Waiting: ") + QString::number(wait,'f',2));
+    m_currentIndex = m_rectangles.size();
+    update();
+}
