@@ -48,6 +48,7 @@ private slots:
     void enableOrDisablePriority(int index);
     void on_staticbutt_clicked();
     void drawNextRectangle();
+    void on_submit_clicked();
 
 private:
     Ui::MainWindow *ui;
