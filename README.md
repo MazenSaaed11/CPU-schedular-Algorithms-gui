@@ -23,6 +23,13 @@ Users can interact with the program through the following components:
 
 The Gantt chart representation consists of rectangles drawn sequentially, with each rectangle representing a process. The center of each rectangle contains the process number, while 'X' denotes idle time. Each process is assigned a different color for easy identification.
 
+
+An executable file (exe) exists for the application. To run the program, follow these steps:
+
+1. Download `exe.zip` from the repository.
+2. Extract the contents of `exe.zip`.
+3. Run the extracted executable file (`scheduler.exe`).
+
 ### Screenshots
 
 1. FCFS Scheduler
