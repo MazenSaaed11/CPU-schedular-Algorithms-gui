@@ -1,3 +1,8 @@
+#pragma once
+#include<string>
+#include<vector>
+using namespace std;
+
 struct data_to_output {
     double avgWaitingTime;
     double avgTurnAroundTime;
@@ -16,14 +21,14 @@ struct Process {
 
     Process();
     Process(const string &processName, int arrivalTime, int burstTime, int priority);
-    void initialize();
 };
 
 bool sortByArrivalTime(const Process &a, const Process &b);
 
-//note this function will sort descending so reverse after you sort if you need it amgad shrief el mo5eef 3amlha 3shan bs priority_queue f lazem tt3ml kda.
+bool sortByPriority(const Process &a, const Process &b);
+
 bool sortByRemainingTime(const Process &a, const Process &b);
 
-//SJF
-data_to_output SJF_preemptive(vector<Process>& processes);
-data_to_output SJF_nonpreemptive(vector<Process>& processes);
+data_to_output SJF_NonPreemptive(vector<Process>& processes);
+
+data_to_output SJF_Preemptive(vector<Process>& processes);
