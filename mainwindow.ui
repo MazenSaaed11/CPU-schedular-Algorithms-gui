@@ -389,6 +389,77 @@ color:#333;</string>
     </property>
    </widget>
   </widget>
+
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>310</y>
+      <width>211</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #333;
+font-weight: bold;
+text-align: center;
+font-size: 24px;</string>
+    </property>
+    <property name="text">
+     <string>Add new Process:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="addedp">
+    <property name="geometry">
+     <rect>
+      <x>639</x>
+      <y>362</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">padding: 2px;
+padding-left: 10px;
+
+border: 2px solid #1864ab;
+border-radius: 6px;
+background-color: #fff;
+font: 9pt &quot;Segoe UI&quot;;
+text-align:center;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="submit">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>362</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">padding: 5px;
+border: 2px solid #1864ab;
+border-radius: 6px;
+background-color: #fff;
+color:#333;
+font-size:14px;
+font-weight:bold;</string>
+    </property>
+    <property name="text">
+     <string>Submit</string>
+    </property>
+   </widget>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
