@@ -50,4 +50,4 @@ An executable file (exe) exists for the application. To run the program, follow 
 6. Round-Robin Scheduler
 ![Round-Robin Scheduler](images/round_robin.png)
 
-Feel free to contribute to this project and improve its functionality! If you encounter any issues or have suggestions, please open an issue in the repository.
+If you encounter any issues or have suggestions, please open an issue in the repository.
