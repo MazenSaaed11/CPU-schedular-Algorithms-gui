@@ -134,3 +134,50 @@ data_to_output fcfs(vector<Process>& processes) {
     data.avgTurnAroundTime = totalTurnaroundTime / processes.size();
     return data;
 }
+
+data_to_output non_preemptive_priority(vector<Process> processes) {
+    data_to_output out;
+    sort(processes.begin(), processes.end(), sortByArrivalTime);
+    int currentTime = 0;
+    int totalProcesses = processes.size();
+    int completedProcesses = 0;
+
+    out.avgWaitingTime = 0;
+    out.avgTurnAroundTime = 0;
+
+    while (completedProcesses < totalProcesses) {
+        int nextProcessIndex = -1;
+        for (int i = 0; i < totalProcesses; ++i) {
+            if (processes[i].arrivalTime <= currentTime && processes[i].remainingTime > 0) {
+                if (nextProcessIndex == -1 || processes[i].priority < processes[nextProcessIndex].priority) {
+                    nextProcessIndex = i;
+                }
+            }
+        }
+
+        if (nextProcessIndex != -1) {
+            Process &currentProcess = processes[nextProcessIndex];
+            for (int i = 0; i < currentProcess.burstTime; i++)
+                out.ganttChart.push_back(currentProcess.processName);
+
+            currentProcess.waitingTime = currentTime - currentProcess.arrivalTime;
+            currentTime += currentProcess.burstTime;
+            currentProcess.completionTime = currentTime;
+            currentProcess.turnAroundTime = currentProcess.completionTime - currentProcess.arrivalTime;
+
+            out.avgWaitingTime += currentProcess.waitingTime;
+            out.avgTurnAroundTime += currentProcess.turnAroundTime;
+
+            currentProcess.remainingTime = 0;
+            completedProcesses++;
+        } else {
+            out.ganttChart.push_back("x");
+            currentTime++;
+        }
+    }
+    out.avgWaitingTime /= totalProcesses;
+    out.avgTurnAroundTime /= totalProcesses;
+
+    return out;
+}
+
