@@ -181,3 +181,127 @@ data_to_output non_preemptive_priority(vector<Process> processes) {
     return out;
 }
 
+/**********************************************************************************
+ *                           Function Name: RR                                    *
+ *         Descripton: Implement the Round Robin scheduling algorithm             *
+ *                Input: vector of processes and quantum time                    *
+ **********************************************************************************/
+
+data_to_output RR(vector<Process>& processes, int quantum)
+{
+    data_to_output out;
+
+    /*
+     * Check if the time quantum is zero or negative
+     */
+    if (quantum <= 0)
+    {
+        out.ganttChart.push_back("Zero or negative time quantum");
+        return out;
+    }
+
+
+    /**********************************************************************************
+     *                                  Variables                                     *
+     **********************************************************************************/
+
+    int numOfProcesses = (int)processes.size();
+    vector<string> ganttChart;
+
+    /*
+     *  Vector to track whether each process is completed
+     */
+    vector<bool> done(numOfProcesses, false);
+
+    int completedProcesses = 0;
+    int currentTime = 0;
+    int processIndex = 0;
+    int sumWaitingTime = 0;
+    int sumTurnAroundTime = 0;
+    /**********************************************************************************/
+
+    /*
+     *  Sort processes by arrival time
+     */
+    sort(processes.begin(), processes.end(), sortByArrivalTime);
+
+    /*
+     * Handles case if the arrival time of the first process is greater than zero
+     */
+    if (processes[0].arrivalTime > 0)
+    {
+        /*
+         * Mark gantChart as idle "x"
+         */
+        for (int t = 0; t < processes[0].arrivalTime; t++)
+        {
+            ganttChart.push_back("x");
+        }
+    }
+
+    /*
+     * Initialize remaining time for each process
+     */
+    for (int i = 0; i < numOfProcesses; i++)
+    {
+        processes[i].remainingTime = processes[i].burstTime;
+    }
+
+    while (completedProcesses < numOfProcesses)
+    {
+        bool executed = false;
+        for (int i = 0; i < numOfProcesses; ++i) 
+        {
+            if (processes[i].remainingTime > 0 && processes[i].arrivalTime <= currentTime) 
+            {
+                int executeTime = min(quantum, processes[i].remainingTime);
+                /*
+                 * Add the process to the Gantt chart
+                 */
+                for (int j = 0; j < executeTime; ++j) 
+                {
+                    ganttChart.push_back(processes[i].processName);
+                }
+
+                processes[i].remainingTime -= executeTime;
+                currentTime += executeTime;
+
+                if (processes[i].remainingTime == 0) 
+                {
+                    processes[i].finishTime = currentTime;
+                    processes[i].turnAroundTime = processes[i].finishTime - processes[i].arrivalTime;
+                    processes[i].waitingTime = processes[i].finishTime - processes[i].burstTime - processes[i].arrivalTime;
+                    sumTurnAroundTime += processes[i].turnAroundTime;
+                    sumWaitingTime += processes[i].waitingTime;
+                    completedProcesses++;
+                }
+                executed = true;
+            }
+        }
+        /*
+         * If no process was executed in this iteration, mark it as idle in the Gantt chart 
+         */
+        if (!executed)
+        {
+            ganttChart.push_back("x");
+            currentTime ++;
+        }
+    }
+
+    /*
+     * Calculate average waiting time and average turn-around time
+     */
+
+    float avgWaitingTime = (float)sumWaitingTime / numOfProcesses;
+    float avgTurnAroundTime = (float)sumTurnAroundTime / numOfProcesses;
+
+    /*
+     * Fill struct of output
+     */
+
+    out.avgTurnAroundTime = avgTurnAroundTime;
+    out.avgWaitingTime = avgWaitingTime;
+    out.ganttChart = ganttChart;
+
+    return out;
+}
