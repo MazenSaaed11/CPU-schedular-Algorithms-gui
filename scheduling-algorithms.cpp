@@ -1,9 +1,12 @@
-#include "scheduling-algorithms.h"
+#include"scheduling-algorithms.h"
+#include<algorithm>
+#include<queue>
 
-// process struct
-Process::Process() {
-    priority = -1;
+
+Process::Process(){
+
 }
+
 Process::Process(const string &processName, int arrivalTime, int burstTime, int priority) {
     this->processName = processName;
     this->arrivalTime = arrivalTime;
@@ -11,23 +14,24 @@ Process::Process(const string &processName, int arrivalTime, int burstTime, int 
     this->priority = priority;
     this->remainingTime = burstTime;
 }
-void Process::initialize() {
-    remainingTime = burstTime;
-}
 
 bool sortByArrivalTime(const Process &a, const Process &b) {
     return a.arrivalTime < b.arrivalTime;
 }
 
-//note this function will sort descending so reverse after you sort if you need it amgad shrief el mo5eef 3amlha 3shan bs priority_queue f lazem tt3ml kda.
+bool sortByPriority(const Process &a, const Process &b) {
+    return a.priority < b.priority;
+}
+
 bool sortByRemainingTime(const Process &a, const Process &b) {
     return a.remainingTime > b.remainingTime;
 }
 
-data_to_output SJF_nonpreemptive(vector<Process>& processes) {
+data_to_output SJF_NonPreemptive(vector<Process>& processes) {
     vector<Process> v = processes;
+    int numOfProcesses = v.size();
     sort(v.begin(),v.end(), sortByArrivalTime);
-    
+
     int sum_of_time = 0;
     for (int i = 0; i < numOfProcesses; i++) sum_of_time += v[i].burstTime;
     int total_time = sum_of_time + v.back().arrivalTime;
@@ -55,13 +59,14 @@ data_to_output SJF_nonpreemptive(vector<Process>& processes) {
         second += cur_process.burstTime - 1;
     }
     while(ret.ganttChart.back() == "x") ret.ganttChart.pop_back();
-    ret.avgWaitingTime = ret.avgWaitingTime / (float)numOfProcesses;
-    ret.avgTurnAroundTime = ret.avgTurnAroundTime / (float)numOfProcesses;
+    ret.avgWaitingTime = ret.avgWaitingTime / (double)numOfProcesses;
+    ret.avgTurnAroundTime = ret.avgTurnAroundTime / (double)numOfProcesses;
     return ret;
 }
 
-data_to_output SJF_preemptive(vector<Process>& processes){
+data_to_output SJF_Preemptive(vector<Process>& processes){
     vector<Process> v = processes;
+    int numOfProcesses = v.size();
     sort(v.begin(),v.end(), sortByArrivalTime);
     int sum_of_time = 0;
     for (int i = 0; i < numOfProcesses; i++) sum_of_time += v[i].burstTime;
@@ -85,7 +90,7 @@ data_to_output SJF_preemptive(vector<Process>& processes){
         ret.ganttChart.push_back(cur.processName);
         cur.remainingTime--;
         if(cur.remainingTime == 0){
-//            cout<<cur.processName<<' '<<(second - cur.arrivalTime - cur.burstTime + 1)<<'\n';
+            //            cout<<cur.processName<<' '<<(second - cur.arrivalTime - cur.burstTime + 1)<<'\n';
             ret.avgTurnAroundTime += (second - cur.arrivalTime + 1);
             ret.avgWaitingTime += (second - cur.arrivalTime - cur.burstTime + 1);
         }
