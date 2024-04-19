@@ -32,3 +32,5 @@ bool sortByRemainingTime(const Process &a, const Process &b);
 data_to_output SJF_NonPreemptive(vector<Process>& processes);
 
 data_to_output SJF_Preemptive(vector<Process>& processes);
+
+data_to_output fcfs(vector<Process>& processes);
