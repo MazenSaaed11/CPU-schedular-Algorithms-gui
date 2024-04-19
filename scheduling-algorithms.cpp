@@ -184,7 +184,7 @@ data_to_output non_preemptive_priority(vector<Process> processes) {
 /**********************************************************************************
  *                           Function Name: RR                                    *
  *         Descripton: Implement the Round Robin scheduling algorithm             *
- *                Input: vector of processes and quantum time                    *
+ *                Input: vector of processes and quantum time                     *
  **********************************************************************************/
 
 data_to_output RR(vector<Process>& processes, int quantum)
