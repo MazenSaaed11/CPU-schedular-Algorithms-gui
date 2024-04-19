@@ -60,7 +60,7 @@ data_to_output SJF_nonpreemptive(vector<Process>& processes) {
     return ret;
 }
 
-data_to_output SJF_nonpreemptive(vector<Process>& processes){
+data_to_output SJF_preemptive(vector<Process>& processes){
     vector<Process> v = processes;
     sort(v.begin(),v.end(), sortByArrivalTime);
     int sum_of_time = 0;
