@@ -179,6 +179,7 @@ data_to_output preemptive_priority(vector<Process>& processes) {
 
     return out;
 }
+
 data_to_output non_preemptive_priority(vector<Process> processes) {
     data_to_output out;
     sort(processes.begin(), processes.end(), sortByArrivalTime);
