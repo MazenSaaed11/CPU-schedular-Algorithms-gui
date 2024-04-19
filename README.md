@@ -33,21 +33,27 @@ An executable file (exe) exists for the application. To run the program, follow 
 ### Screenshots
 
 1. FCFS Scheduler
+
 ![FCFS Scheduler](images/fcfs.png)
 
 2. SJF Preemptive Scheduler
+
 ![SJF Preemptive Scheduler](images/sjf_preemptive.png)
 
 3. SJF Non-preemptive Scheduler
+
 ![SJF Non-preemptive Scheduler](images/sjf_non_preemptive.png)
 
 4. Priority Preemptive Scheduler
+
 ![Priority Preemptive Scheduler](images/priority_preemptive.png)
 
 5. Priority Non-preemptive Scheduler
+
 ![Priority Non-preemptive Scheduler](images/priority_non_preemptive.png)
 
 6. Round-Robin Scheduler
+
 ![Round-Robin Scheduler](images/round_robin.png)
 
 If you encounter any issues or have suggestions, please open an issue in the repository.
