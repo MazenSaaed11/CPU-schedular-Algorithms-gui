@@ -28,7 +28,7 @@ An executable file (exe) exists for the application. To run the program, follow 
 
 1. Download `exe.zip` from the repository.
 2. Extract the contents of `exe.zip`.
-3. Run the extracted executable file (`scheduler.exe`).
+3. Run the extracted executable file (`OSS.exe`).
 
 ### Screenshots
 
